@@ -1,0 +1,120 @@
+.header {
+  font-size: 3em;
+  font-weight: bold;
+  vertical-align:middle;
+  text-align: left;
+  background-color: white;
+  position: fixed;
+  padding-left: 20px;
+  width: 40vw;
+  height: 70px;
+  border-bottom-color: lightgray;
+  border-bottom-style: solid;
+  border-bottom-width: thin;
+  z-index: 1;
+}
+
+.content {
+  padding-top: 70px;
+  text-align: center;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: lightgray;
+}
+
+.home-tweet {
+  text-align: left;
+  padding: 10px;
+  border-color: #EBEEF0;
+  border-bottom-width: 20px;
+  border-bottom-style: solid;
+}
+
+.tweet-input {
+  display: block;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: lightgray;
+  margin-bottom: 20px;
+}
+
+.input-text {
+  margin-top: 10px;
+  width: 35vw;
+  font-size: 1.2vw;
+}
+
+.tweet-img-btn {
+  color: #1da0f2;
+  line-height: 1.3vw;
+  font-size: 1.3vw;
+  height: 2vw;
+  width: 2vw;
+  display: inline-block;
+  border-radius: 5vw;
+  border-style: none;
+  outline: 0;
+}
+
+.tweet-btn {
+  color: white;
+  background-color: #1da0f26c;
+  font-weight: bold;
+  line-height: 1.3vw;
+  font-size: 1vw;
+  height: 2vw;
+  width: 5vw;
+  display: inline-block;
+  border-radius: 5vw;
+  border-style: none;
+  position: absolute;
+  right: 26vw;
+  outline: 0;
+  cursor: pointer;
+}
+
+.tweet-content {
+  text-align: left;
+  width: 38vw;
+  padding: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  display: table;
+  border-style: none;
+  min-height: 15vh;
+  height: auto;
+  background-color: #00000000;
+  outline: 0;
+}
+
+.tweet-content-div {
+  margin: 2px;
+  border-color: lightgray;
+  border-width: 1px;
+  border-style: solid;
+}
+
+.tweet-name {
+  display: inline-block;
+  line-height: 2vw;
+  font-size: 0.8vw;
+  font-weight: bold;
+}
+
+.tweet-time {
+  white-Space: pre-wrap;
+  display: inline-block;
+  line-height: 2vw;
+  font-size: 0.8vw;
+}
+
+.tweet-body {
+  font-size: 0.9vw;
+  max-width: 34vw;
+  white-Space: pre-wrap;
+}
+
+.tweet-wrap {
+  display: inline;
+  vertical-align: top;
+}

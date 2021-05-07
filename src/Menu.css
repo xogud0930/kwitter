@@ -1,0 +1,23 @@
+.site-main-layout {
+  background-color:white;
+}
+
+.site-content-layout {
+  background-color: white;
+  border-right-color: lightgray;
+  border-right-style: solid;
+  border-right-width: thin;
+  margin-left: 35vw;
+  margin-right: 25vw;
+}
+
+.site-sider {
+  border-right-color: lightgray;
+  border-right-style: solid;
+  border-right-width: thin;
+  margin-left: 20vw;
+  overflow: auto;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+}
