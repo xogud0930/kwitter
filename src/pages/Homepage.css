@@ -102,6 +102,7 @@
 }
 
 .tweet-time {
+  color: gray;
   white-Space: pre-wrap;
   display: inline-block;
   line-height: 2vw;
@@ -111,10 +112,20 @@
 .tweet-body {
   font-size: 0.9vw;
   max-width: 34vw;
+  min-height: 9vh;
   white-Space: pre-wrap;
 }
 
 .tweet-wrap {
   display: inline;
   vertical-align: top;
+}
+
+.del-btn {
+  position: absolute;
+  right: 25.5vw;
+  font-size: 1vw;
+  border-radius: 5vw;
+  border-style: none;
+  outline: 0;
 }
