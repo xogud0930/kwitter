@@ -23,8 +23,10 @@ const Testmenu = () => {
                 </Sider>
 
                 <Layout className="site-content-layout">
-                    <Routes />
-                    <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+                    <div className="contents">
+                        <Routes />
+                    </div>
+                    <footer>Ant Design ©2018 Created by Ant UED</footer>
                 </Layout>
             </Router>
         </Layout>

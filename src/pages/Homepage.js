@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { IoPersonCircle  } from 'react-icons/io5';
 import { RiImage2Line, RiDeleteBinLine  } from 'react-icons/ri';
-import { Button, Tooltip, Layout, Input } from 'antd';
+import { Button, Tooltip, Layout, Input, Empty } from 'antd';
 import { db } from '../Firebase'
 import './Homepage.css';
 import 'antd/dist/antd.css';
@@ -27,7 +27,7 @@ const Homepage = () => {
 
   const handleOnClick = () => {
     if(state.isActive) {
-      writeNewPost("xogud0930", text, getTime())
+      writeNewPost("Test", text, getTime())
       setText("")
       setState({ isActive:false })
     }
@@ -102,7 +102,9 @@ const Homepage = () => {
             >Tweet</button>
           </div>
         </div>
-        {Object.keys(contents).reverse().map((post, id) => (
+
+        {contents !== ""
+          ? (Object.keys(contents).reverse().map((post, id) => (
           <div
             className="tweet-content-div"
             style={{backgroundColor: id+1 === onMouse.tweet ? "#ebebeb44" : "white"}}>
@@ -130,8 +132,9 @@ const Homepage = () => {
               </div>
 
             </button>
-          </div>
-        ))}
+          </div>  
+        )))
+        : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} style={{marginTop:"20vh"}} />}
 
       </Content>
     </div>

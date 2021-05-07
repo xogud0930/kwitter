@@ -85,8 +85,8 @@ const NavBar = () => {
         >
             <IoPersonCircle style={{fontSize:"3vw", verticalAlign: "middle"}}/>
             <div className="btn-profile-name">
-                <div style={{fontWeight: "bold"}}>권태형</div>
-                <div style={{color: "grey"}}>@IHvqwsvR7oeDDFB</div>
+                <div style={{fontWeight: "bold"}}>Test</div>
+                <div style={{color: "grey"}}>@abcdefghij</div>
             </div>
             <BiDotsHorizontalRounded style={{fontSize:"1.3vw", verticalAlign: "middle"}}/>
         </button>
