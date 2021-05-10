@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { IoPersonCircle  } from 'react-icons/io5';
 import { RiImage2Line, RiDeleteBinLine  } from 'react-icons/ri';
-import { Button, Tooltip, Layout, Input, Empty } from 'antd';
+import { Button, Tooltip, Layout, Input, Empty, message } from 'antd';
 import { db } from '../Firebase'
 import './Homepage.css';
 import 'antd/dist/antd.css';
@@ -46,8 +46,19 @@ const Homepage = () => {
   }
 
   const delPost = (post) => {
-    db.ref().child("posts").child(post.uid).remove();
-    console.log(post.uid);
+    var message = "해당 트윗을 삭제하겠습니까?"
+    if(window.confirm(message)) {
+      db.ref().child("posts").child(post.uid).child("userId").on('value', (snapshot) => {
+        if(snapshot.exists()) {
+          var delUser = snapshot.val()
+          if(delUser !== "null" && window.localStorage.getItem("userId") === delUser) {
+            db.ref().child("posts").child(post.uid).remove();
+          } else {
+            alert("권한이 없습니다.")
+          }
+        }
+      });
+    }
   }
 
   useEffect(() => {
@@ -98,7 +109,7 @@ const Homepage = () => {
               <div className="tweet-wrap">
                 <IoPersonCircle style={{fontSize: "3vw", marginRight:"5px", verticalAlign: "top"}}/>
                 <div style={{display:"inline-table"}}>
-                  <div className="tweet-name">{contents[post].author}</div>
+                  <div className="tweet-name">{contents[post].userId}</div>
                   <div className="tweet-time"> - {contents[post].time}</div>
                   <button
                     className="del-btn"
@@ -120,7 +131,7 @@ const Homepage = () => {
 
 const writeNewPost = (body, time) => {
   var postData = {
-    author: window.localStorage.getItem("userId"),
+    userId: window.localStorage.getItem("userId"),
     uid: window.localStorage.getItem("userId"),
     body: body,
     time: time,

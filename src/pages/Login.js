@@ -19,7 +19,7 @@ const Login = (props) => {
         password: "",
         idCheck: false,
         pwCheck: false,
-        noId: false,
+        loginUid : "",
     })
 
     const handleChange = (e) => {
@@ -43,6 +43,7 @@ const Login = (props) => {
             password: "",
             idCheck: false,
             pwCheck: false,
+            loginUid : "",
         })
         setBtnCheck(false);
         close();
@@ -53,40 +54,39 @@ const Login = (props) => {
     }
 
     const userloginCheck = () => {
-        var loginUid = "";
+        setAccount({...account, loginUid: ""});
         db.ref().child("userId").on('value', async (snapshot) => {
             setBtnCheck(true);
             if(snapshot.exists()) {
                 var userIdList = await Object.entries(snapshot.val())
                 userIdList.map((list) => {
                     if(list[0] === account.userId) {
-                        loginUid = list[1];
-                        setAccount({...account, idCheck:true});
+                        setAccount({...account, idCheck: true, loginUid: list[1]});
                     }
                 })
             }
-
-            if(loginUid !== "") {
-                db.ref().child("accounts").child(loginUid).on('value', async (snapshot) => {
-                    if(snapshot.exists()) {
-                        var dbAccount = await snapshot.val();
-                        account.idCheck = dbAccount.userId === account.userId ? true : false;
-                        account.pwCheck = dbAccount.password === account.password ? true : false;
-                        console.log(account.idCheck)
-                        console.log(account.pwCheck)
-                        if(account.idCheck & account.pwCheck) {
-                            window.localStorage.setItem("userId", dbAccount.userId)
-                            window.localStorage.setItem("email", dbAccount.email)
-                            window.localStorage.setItem("uid", dbAccount.uid)
-                            props.history.push("/main");
-                        }
-                    }
-                });
-            }   
         });
-
-        
     }
+    
+    useEffect(() => {
+        if(account.loginUid !== "") {
+            db.ref().child("accounts").child(account.loginUid).on('value', async (snapshot) => {
+                if(snapshot.exists()) {
+                    var dbAccount = await snapshot.val();
+                    account.idCheck = dbAccount.userId === account.userId ? true : false;
+                    account.pwCheck = dbAccount.password === account.password ? true : false;
+                    console.log(account.idCheck)
+                    console.log(account.pwCheck)
+                    if(account.idCheck & account.pwCheck) {
+                        window.localStorage.setItem("userId", dbAccount.userId)
+                        window.localStorage.setItem("email", dbAccount.email)
+                        window.localStorage.setItem("uid", dbAccount.uid)
+                        props.history.push("/main");
+                    }
+                }
+            });
+        }   
+    }, [account.loginUid])
 
     return (
         <>
