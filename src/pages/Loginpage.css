@@ -59,6 +59,24 @@
     border-color: #1da0f2;
     border-style: solid;
     outline: 0;
+    cursor: pointer;
+}
+
+.sign-btn {
+    background-color: #1da0f2;
+    color: white;
+}
+.sign-btn:hover {
+    background-color: #1985c9;
+}
+
+.login-btn {
+    background-color: white;
+    color: #1da0f2;
+}
+
+.login-btn:hover {
+    background-color: #1da0f227;
 }
 
 .login-footer {

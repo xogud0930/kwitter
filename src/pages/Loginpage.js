@@ -41,20 +41,10 @@ const Loginpage = (props) => {
                 <div className="login-title">지금 일어나고 있는 일</div>
                 <div className="login-subtitle">오늘 트위터에 가입하세요.</div>
                 <button className="sign-btn"
-                    onMouseEnter={() => setOnMouse(1)}
-                    onMouseLeave={() => setOnMouse(0)}
                     onClick={() => signOpenModal()}
-                    style={{
-                        backgroundColor: onMouse === 1 ? "#1985c9" : "#1da0f2",
-                        color : "white"}}
                 >가입하기</button>
                 <button className="login-btn"
-                    onMouseEnter={() => setOnMouse(2)}
-                    onMouseLeave={() => setOnMouse(0)}
                     onClick={() => loginOpenModal()}
-                    style={{
-                        backgroundColor: onMouse === 2 ? "#1da0f227" : "white",
-                        color : "#1da0f2"}}
                 >로그인</button>
 
                 <SignIn isOpen={state.signModalOpen} close={() => signCloseModal()} {...props} />

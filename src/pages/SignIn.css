@@ -59,6 +59,7 @@
     background-color: #1da0f2;
     color : white;
     margin: 30px auto;
+    cursor: pointer;
 }
 
 .sign-input button:hover {

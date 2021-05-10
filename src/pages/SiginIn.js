@@ -21,15 +21,14 @@ const SignIn = (props) => {
         password: "",
         passwordCheck: "",
     })
-    const [ state, setState ] = useState({
-        userIdCheck: false,
-    })
+    const [ userIdCheck, setUserIdCheck ] = useState(false);
     const [ btnCheck, setBtnCheck ] = useState(false);
     const [ pwCheck, setPwCheck ] = useState(false);
+    const [ emptyCheck, setEmptyCheck ] = useState(true);
 
     const handleChange = (e) => {
         const { value, name } = e.target;
-        if(name === "userId") setState({ userIdCheck: false });
+        if(name === "userId") setUserIdCheck(false);
         setAccount({
             ...account,
             [name]: value,
@@ -42,65 +41,59 @@ const SignIn = (props) => {
             email: "",
             userId: "",
             password: "",
+            passwordCheck: "",
         });
-        setState({
-            userIdCheck: false,
-        });
+        setUserIdCheck(false);
         setBtnCheck(false);
+        setPwCheck(false);
+        setEmptyCheck(true);
         props.history.push("/");
         close();
-    }
+    };
 
-    const regAccount = () => {
-        var checkEmpty = true;
-        var accountData = {...account};
-
+    const regAccount = async () => {
         setBtnCheck(true);
-        
-        Object.values(accountData).map((acc) => {
+        Object.values(account).map((acc) => {
             if(acc === "") {
-                checkEmpty = false;
+                setEmptyCheck(false);
             }
         });
-
-        if(account.password === account.passwordCheck) {
-            setPwCheck(true);
-        }
-
-        AccountCheck()
-
-        if(!state.userIdCheck & ( checkEmpty & pwCheck )) {
-            var newAccKey = db.ref().child('accounts').push().key;
-            accountData.uid = newAccKey;
-
-            var updates = {};
-
-            updates['/userId/' + accountData.userId] = newAccKey;
-            db.ref().update(updates);
-
-            updates['/accounts/' + newAccKey] = accountData;
-            db.ref().update(updates);
-
-            onReset();
-        }
+        setPwCheck(account.password == account.passwordCheck);
+        AccountCheck();
     };
 
     const AccountCheck = () => {
-        var dupeCheck = false;
-
         db.ref().child("userId").on('value', (snapshot) => {
 
             if(snapshot.exists()) {
                 var userIdList = Object.keys(snapshot.val())
                 userIdList.map((id) => {
-                    if(id === account.userId) dupeCheck = true;
-                    setState({ userIdCheck: dupeCheck });
-                    return dupeCheck;
+                    if(id === account.userId) {
+                        setUserIdCheck(true);
+                    }
                 })
                 
             }
         });
     }
+
+    useEffect(() => {
+        if(!userIdCheck & ( emptyCheck & pwCheck )) {
+
+            var newAccKey = db.ref().child('accounts').push().key;
+            account.uid = newAccKey;
+            console.log('test')
+            var updates = {};
+
+            updates['/userId/' + account.userId] = newAccKey;
+            db.ref().update(updates);
+
+            updates['/accounts/' + newAccKey] = account;
+            db.ref().update(updates);
+
+            onReset();
+        }
+    }, [userIdCheck, btnCheck])
 
     return(
         <>
@@ -119,7 +112,7 @@ const SignIn = (props) => {
                                 onChange={handleChange}
                                 placeholder={list.name}
                             />
-                            {(state.userIdCheck & list.value === "userId")
+                            {(userIdCheck & list.value === "userId")
                             ? <span>중복된 아이디 입니다.</span>
                             : (btnCheck & !pwCheck & (list.value === "password" | list.value === "passwordCheck"))
                             ? <span>비밀번호가 일치하지 않습니다.</span>
