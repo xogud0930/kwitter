@@ -8,6 +8,7 @@ import { BsFillPersonFill } from "react-icons/bs";
 import { CgMoreO } from "react-icons/cg";
 import { IoLogoTwitter } from "react-icons/io";
 import { IoPersonCircle  } from "react-icons/io5";
+import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 import './NavBar.css';
 
 const lists = [
@@ -21,17 +22,15 @@ const lists = [
     { id: 8, title: " Profile", icon: <BsFillPersonFill/>, link: "/profile"},
 ];
 
-const NavBar = () => {
-    const [onMouse, setOnMouse] = useState(0);
-    const [selected, setSelected] = useState(0);
-
-    const handleColor = (row) => {
-        setOnMouse(row.id);
+const NavBar = (props) => {
+    const userData = {
+        userId: window.localStorage.getItem("userId"),
+        email: window.localStorage.getItem("email"),
     };
 
-    const handleClick = (row) => {
-        setSelected(row.id);
-    };
+    const logout = () => {
+        props.history.push("/")
+    }
 
     return (
         <nav className="navbar-menu">
@@ -39,16 +38,9 @@ const NavBar = () => {
             <button
                 className="btn"
                 key={list.id}
-                onClick={() => handleClick(list)}
-                onMouseEnter={() => handleColor(list)}
-                onMouseLeave={() => setOnMouse(0)}
-                style={{ backgroundColor: list.id === onMouse ? "#1da0f227" : "white" }}
             >
-                <Link to={list.link}>
-                    <div
-                        className="navbar"
-                        style={{color: (list.id === selected | list.id === onMouse) ? "#1da0f2" : "black"}}
-                    >
+                <Link to={"/main" + list.link}>
+                    <div className="navbar">
                         {list.icon}
                         {list.title}  
                     </div>
@@ -57,39 +49,28 @@ const NavBar = () => {
         ))}          
         <button
             className="btn"
-            onClick={() => handleClick({id:9})}
-            onMouseEnter={() => handleColor({id:9})}
-            onMouseLeave={() => setOnMouse(0)}
-            style={{ backgroundColor: 9 === onMouse ? "#1da0f227" : "white" }}
         >
-            <div
-                className="navbar"
-                style={{color: (9 === selected | 9 === onMouse) ? "#1da0f2" : "black"}}
-            ><CgMoreO/> More</div>
+            <div className="navbar"><CgMoreO/> More</div>
         </button>
 
         <button
             className="btn-tweet"
-            onMouseEnter={() => handleColor({id:10})}
-            onMouseLeave={() => setOnMouse(0)}
-            style={{ backgroundColor: 10 === onMouse ? "#1985c9" : "#1da0f2" }}
         >
             Tweet
         </button>
-
+        
         <button
             className="btn-profile"
-            onMouseEnter={() => handleColor({id:11})}
-            onMouseLeave={() => setOnMouse(0)}
-            style={{ backgroundColor: 11 === onMouse ? "#1da0f227" : "white" }}
+            onClick={() => logout()}
         >
             <IoPersonCircle style={{fontSize:"3vw", verticalAlign: "middle"}}/>
             <div className="btn-profile-name">
-                <div style={{fontWeight: "bold"}}>Test</div>
-                <div style={{color: "grey"}}>@abcdefghij</div>
+                <div style={{fontWeight: "bold"}}>{userData.userId}</div>
+                <div style={{color: "grey"}}>{userData.email}</div>
             </div>
             <BiDotsHorizontalRounded style={{fontSize:"1.3vw", verticalAlign: "middle"}}/>
         </button>
+
         </nav>
     );
 }

@@ -9,6 +9,19 @@
     padding: 5px;
     padding-bottom: 0px;
     text-align: left;
+    color: black;
+}
+
+.navbar:hover {
+    color: #1da0f2;
+}
+
+.navbar-menu .btn {
+    background-color: white;
+}
+
+.navbar-menu .btn:hover {
+    background-color: #1da0f227;
 }
 
 .btn {
@@ -18,7 +31,7 @@
     padding-left: 10px;
     padding-right: 10px;
     margin: 10px;
-    outline: 0;
+    cursor: pointer;
 }
 
 .btn-tweet {
@@ -31,9 +44,15 @@
     padding: 0.5vw;
     width: 13vw;
     outline: 0;
+    cursor: pointer;
+}
+
+.btn-tweet:hover {
+    background-color: #1985c9;
 }
 
 .btn-profile {
+    background-color: white;
     position: absolute;
     bottom: 10px;
     left: 0px;
@@ -42,6 +61,11 @@
     width: 14.5vw;
     height: 3.5vw;
     outline: 0;
+    cursor: pointer;
+}
+
+.btn-profile:hover {
+    background-color: #1da0f227;
 }
 
 .btn-profile-name {
@@ -52,5 +76,3 @@
     vertical-align: middle;
     display:inline-block;
 }
-
-/* 02-820-4493 */

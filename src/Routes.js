@@ -20,12 +20,12 @@ const lists = [
 
 const Routes = () => {
     return(
-        <switch>
-            <Route exact path="/" component={Homepage} />
+        <Switch>
+            <Route exact path="/main" component={Homepage} />
             {lists.map((list) => (
-                <Route exact path={list.link} component={list.component} />
+                <Route exact path={"/main" + list.link} component={list.component} />
             ))}
-        </switch>
+        </Switch>
     )
 }
 

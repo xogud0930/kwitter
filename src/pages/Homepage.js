@@ -12,10 +12,6 @@ const { TextArea } = Input;
 
 const Homepage = () => {
   const [text, setText] = useState("");
-  const [onMouse, setOnMouse] = useState({
-    tweet:0,
-    del:0,
-  });
   const [state, setState] = useState({
     isActive: false,
   })
@@ -27,7 +23,7 @@ const Homepage = () => {
 
   const handleOnClick = () => {
     if(state.isActive) {
-      writeNewPost("Test", text, getTime())
+      writeNewPost(text, getTime())
       setText("")
       setState({ isActive:false })
     }
@@ -86,33 +82,19 @@ const Homepage = () => {
             </div>
             <button
               className="tweet-img-btn"
-              onMouseEnter={() => setOnMouse({tweet:"tweet-img-btn"})}
-              onMouseLeave={() => setOnMouse({tweet:0})}
-              style={{ backgroundColor: "tweet-img-btn" === onMouse.tweet ? "#1da0f227" : "white" }}
             ><RiImage2Line/></button>
 
             <button
-              className="tweet-btn"
-              onMouseEnter={() => setOnMouse({tweet:"tweet-btn"})}
-              onMouseLeave={() => setOnMouse({tweet:0})}
+              className= {state.isActive ? "tweet-btn" : "tweet-btn-disabled"}
               onClick={() => handleOnClick()}
-              style={{ backgroundColor: state.isActive
-                ? ("tweet-btn" === onMouse.tweet ? "#1985c9" : "#1da0f2")
-                : "#1da0f26c" }}
             >Tweet</button>
           </div>
         </div>
 
         {contents !== ""
           ? (Object.keys(contents).reverse().map((post, id) => (
-          <div
-            className="tweet-content-div"
-            style={{backgroundColor: id+1 === onMouse.tweet ? "#ebebeb44" : "white"}}>
-            <button
-            className="tweet-content"
-            onMouseEnter={() => setOnMouse({tweet:id+1})}
-            onMouseLeave={() => setOnMouse({tweet:0})}
-            > 
+          <div className="tweet-content-div">
+            <button className="tweet-content"> 
               <div className="tweet-wrap">
                 <IoPersonCircle style={{fontSize: "3vw", marginRight:"5px", verticalAlign: "top"}}/>
                 <div style={{display:"inline-table"}}>
@@ -120,12 +102,7 @@ const Homepage = () => {
                   <div className="tweet-time"> - {contents[post].time}</div>
                   <button
                     className="del-btn"
-                    onMouseEnter={() => setOnMouse({del:id+1})}
-                    onMouseLeave={() => setOnMouse({del:0})}
                     onClick={() => delPost(contents[post])}
-                    style={{
-                      backgroundColor: id+1 === onMouse.del ? "#ff000010" : "#00000000",
-                      color: id+1 === onMouse.del ? "red" : "lightgray"}}
                   ><RiDeleteBinLine/></button>
                   <div className="tweet-body">{contents[post].body}</div>
                 </div>
@@ -141,20 +118,17 @@ const Homepage = () => {
   ); 
 }
 
-const writeNewPost = (username, body, time) => {
-  // A post entry.
+const writeNewPost = (body, time) => {
   var postData = {
-    author: username,
-    uid: "",
+    author: window.localStorage.getItem("userId"),
+    uid: window.localStorage.getItem("userId"),
     body: body,
     time: time,
   };
 
-  // Get a key for a new Post.
   var newPostKey = db.ref().child('posts').push().key;
   postData.uid = newPostKey;
 
-  // Write the new post's data simultaneously in the posts list and the user's post list.
   var updates = {};
   updates['/posts/' + newPostKey] = postData;
 

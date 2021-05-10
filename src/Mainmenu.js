@@ -2,7 +2,7 @@ import React, { Component, useState } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
-import './Menu.css';
+import './Mainmenu.css';
 import { Layout, Menu } from 'antd';
 
 import NavBar from './NavBar';
@@ -10,7 +10,7 @@ import Routes from './Routes';
 
 const { Header, Content, Footer, Sider } = Layout;
 
-const Testmenu = () => {
+const Mainmenu = (props) => {
 
     return(
         <Layout className="site-main-layout">
@@ -19,7 +19,7 @@ const Testmenu = () => {
                 theme='light'
                 width='15vw'
                 >
-                    <NavBar />
+                    <NavBar {...props}/>
                 </Sider>
 
                 <Layout className="site-content-layout">
@@ -33,4 +33,4 @@ const Testmenu = () => {
     )
 };
 
-export default Testmenu
+export default Mainmenu

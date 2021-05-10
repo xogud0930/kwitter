@@ -45,6 +45,7 @@
 }
 
 .tweet-img-btn {
+  background-color: white;
   color: #1da0f2;
   line-height: 1.3vw;
   font-size: 1.3vw;
@@ -54,9 +55,35 @@
   border-radius: 5vw;
   border-style: none;
   outline: 0;
+  cursor: pointer;
+}
+
+.tweet-img-btn:hover {
+  background-color: #1da0f227;
 }
 
 .tweet-btn {
+  color: white;
+  background-color: #1da0f2;
+  font-weight: bold;
+  line-height: 1.3vw;
+  font-size: 1vw;
+  height: 2vw;
+  width: 5vw;
+  display: inline-block;
+  border-radius: 5vw;
+  border-style: none;
+  position: absolute;
+  right: 26vw;
+  outline: 0;
+  cursor: pointer;
+}
+
+.tweet-btn:hover {
+  background-color: #1985c9;
+}
+
+.tweet-btn-disabled {
   color: white;
   background-color: #1da0f26c;
   font-weight: bold;
@@ -70,7 +97,6 @@
   position: absolute;
   right: 26vw;
   outline: 0;
-  cursor: pointer;
 }
 
 .tweet-content {
@@ -88,10 +114,15 @@
 }
 
 .tweet-content-div {
+  background-color: white;
   margin: 2px;
   border-color: lightgray;
   border-width: 1px;
   border-style: solid;
+}
+
+.tweet-content-div:hover {
+  background-color: #ebebeb44;
 }
 
 .tweet-name {
@@ -122,10 +153,18 @@
 }
 
 .del-btn {
+  color: lightgray;
+  background-color: #00000000;
   position: absolute;
   right: 25.5vw;
   font-size: 1vw;
   border-radius: 5vw;
   border-style: none;
   outline: 0;
+  cursor: pointer;
+}
+
+.del-btn:hover {
+  color: red;
+  background-color: #ff000010;
 }

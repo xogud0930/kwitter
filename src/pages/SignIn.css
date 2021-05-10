@@ -1,0 +1,66 @@
+.modal {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: #00000050;
+    z-index: 1;
+}
+
+.sign-modal {
+    width: 30vw;
+    height: 70vh;
+    background-color: white;
+    position: relative;
+    box-sizing: border-box;
+    border-radius: 1vw;
+    margin: 15vh auto;
+    padding: 10px 50px;
+    background: #ffffff;
+    z-index: 2;
+}
+
+.twitter-logo {
+    margin-top: 10px;
+    font-size: 2vw;
+    color: #1da0f2;
+    text-align: center;
+}
+
+.sign-input div {
+    font-size: 0.7vw;
+    margin-top: 1vh;
+}
+
+.sign-input input {
+    font-size: 0.8vw;
+    padding: 10px;
+    height: 5vh;
+    width: 100%;
+    border-radius: 5px;
+    border-color: lightgray;
+    border-style: solid;
+    outline: 0;
+}
+
+.sign-input input:focus {
+    border-color: #1da0f2;
+    border-width: 3px;
+}
+
+.sign-input span {
+    font-size: 0.7vw;
+    color: #ff0000;
+    font-weight: bold;
+}
+
+.sign-input button {
+    background-color: #1da0f2;
+    color : white;
+    margin: 30px auto;
+}
+
+.sign-input button:hover {
+    background-color: #1985c9;
+}
