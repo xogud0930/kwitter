@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { IoLogoTwitter } from "react-icons/io";
 import "./SignIn.css"
 import { db } from '../Firebase'
+import axios from 'axios';
 
 const inputList = [
     { id:0, name: "이름", value: "name" },
@@ -24,7 +25,6 @@ const SignIn = (props) => {
     const [ userIdCheck, setUserIdCheck ] = useState(false);
     const [ btnCheck, setBtnCheck ] = useState(false);
     const [ pwCheck, setPwCheck ] = useState(false);
-    const [ emptyCheck, setEmptyCheck ] = useState(true);
 
     const handleChange = (e) => {
         const { value, name } = e.target;
@@ -46,20 +46,22 @@ const SignIn = (props) => {
         setUserIdCheck(false);
         setBtnCheck(false);
         setPwCheck(false);
-        setEmptyCheck(true);
         props.history.push("/");
         close();
     };
 
-    const regAccount = async () => {
-        setBtnCheck(true);
-        Object.values(account).map((acc) => {
-            if(acc === "") {
-                setEmptyCheck(false);
-            }
+    const regAccount = () => {
+        axios.post(
+        'http://localhost:6050/api/register',account)
+        .then(res => {
+            console.log(res);
+            setPwCheck(res.data.pwCheck);
+            console.log(`Name : ${res.data.nameCheck}\nEmail : ${res.data.emailCheck}\nID : ${res.data.idCheck}\nPW : ${res.data.pwCheck}`);
+            if(res.data.success) onReset();
+        })  
+        .catch(error => {
+            console.log(error)
         });
-        setPwCheck(account.password == account.passwordCheck);
-        AccountCheck();
     };
 
     const AccountCheck = () => {
@@ -76,24 +78,6 @@ const SignIn = (props) => {
             }
         });
     }
-
-    useEffect(() => {
-        if(!userIdCheck & ( emptyCheck & pwCheck )) {
-
-            var newAccKey = db.ref().child('accounts').push().key;
-            account.uid = newAccKey;
-            console.log('test')
-            var updates = {};
-
-            updates['/userId/' + account.userId] = newAccKey;
-            db.ref().update(updates);
-
-            updates['/accounts/' + newAccKey] = account;
-            db.ref().update(updates);
-
-            onReset();
-        }
-    }, [userIdCheck, btnCheck])
 
     return(
         <>
@@ -114,7 +98,7 @@ const SignIn = (props) => {
                             />
                             {(userIdCheck & list.value === "userId")
                             ? <span>중복된 아이디 입니다.</span>
-                            : (btnCheck & !pwCheck & (list.value === "password" | list.value === "passwordCheck"))
+                            : (btnCheck & !pwCheck & list.value === "passwordCheck" & account.password !== "")
                             ? <span>비밀번호가 일치하지 않습니다.</span>
                             : ((btnCheck & account[list.value] === "")
                             ? <span>입력해주세요.</span>

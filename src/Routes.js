@@ -22,8 +22,8 @@ const Routes = () => {
     return(
         <Switch>
             <Route exact path="/main" component={Homepage} />
-            {lists.map((list) => (
-                <Route exact path={"/main" + list.link} component={list.component} />
+            {lists.map((list, id) => (
+                <Route exact path={"/main" + list.link} component={list.component} key={id}/>
             ))}
         </Switch>
     )

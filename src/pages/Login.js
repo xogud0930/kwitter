@@ -1,6 +1,7 @@
 import React, { useEffect, useReducer, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { IoLogoTwitter } from "react-icons/io";
+import axios from 'axios';
 
 import "./Login.css"
 import { db } from '../Firebase'
@@ -50,43 +51,27 @@ const Login = (props) => {
     }
 
     const loginAccount = () => {
-        userloginCheck();
-    }
 
-    const userloginCheck = () => {
-        setAccount({...account, loginUid: ""});
-        db.ref().child("userId").on('value', async (snapshot) => {
+        axios.post(
+        'http://localhost:6050/api/login',account)
+        .then(res => {
             setBtnCheck(true);
-            if(snapshot.exists()) {
-                var userIdList = await Object.entries(snapshot.val())
-                userIdList.map((list) => {
-                    if(list[0] === account.userId) {
-                        setAccount({...account, idCheck: true, loginUid: list[1]});
-                    }
-                })
-            }
-        });
-    }
-    
-    useEffect(() => {
-        if(account.loginUid !== "") {
-            db.ref().child("accounts").child(account.loginUid).on('value', async (snapshot) => {
-                if(snapshot.exists()) {
-                    var dbAccount = await snapshot.val();
-                    account.idCheck = dbAccount.userId === account.userId ? true : false;
-                    account.pwCheck = dbAccount.password === account.password ? true : false;
-                    console.log(account.idCheck)
-                    console.log(account.pwCheck)
-                    if(account.idCheck & account.pwCheck) {
-                        window.localStorage.setItem("userId", dbAccount.userId)
-                        window.localStorage.setItem("email", dbAccount.email)
-                        window.localStorage.setItem("uid", dbAccount.uid)
-                        props.history.push("/main");
-                    }
+            console.log(res);
+            if(res.data.success) {
+                setAccount({...account, idCheck: res.data.idCheck, pwCheck: res.data.pwCheck})
+                if(res.data.idCheck & res.data.pwCheck) {
+                    window.localStorage.setItem("userId", res.data.result.userId)
+                    window.localStorage.setItem("email", res.data.result.email)
+                    props.history.push("/main");
                 }
-            });
-        }   
-    }, [account.loginUid])
+            } else {
+                setAccount({...account, idCheck: false})
+            }
+        })  
+        .catch(error => {
+            console.log(error)
+        });
+    };
 
     return (
         <>
@@ -110,7 +95,7 @@ const Login = (props) => {
 
                                     {(btnCheck & account[list.value] === "")
                                     ? <span>입력해주세요.</span>
-                                    : (btnCheck & !account.pwCheck & list.value === "password")
+                                    : (btnCheck & !account.pwCheck & account.idCheck & list.value === "password")
                                     ? <span>비밀번호가 일치하지 않습니다.</span>
                                     : ((btnCheck & !account.idCheck & list.value === "userId")
                                     ? <span>등록되지 않은 아이디입니다.</span>

@@ -6,6 +6,7 @@ import { db } from '../Firebase'
 import './Homepage.css';
 import 'antd/dist/antd.css';
 import { responsiveArray } from 'antd/lib/_util/responsiveObserve';
+import axios from 'axios';
 
 const { Header, Content } = Layout;
 const { TextArea } = Input;
@@ -15,7 +16,7 @@ const Homepage = () => {
   const [state, setState] = useState({
     isActive: false,
   })
-  var tweetBtnState = false;
+
 
   const handleChange = (e) => {
     setText(e.target.value);
@@ -23,9 +24,9 @@ const Homepage = () => {
 
   const handleOnClick = () => {
     if(state.isActive) {
-      writeNewPost(text, getTime())
-      setText("")
-      setState({ isActive:false })
+      writeNewPost(text);
+      setText("");
+      setState({ isActive:false });
     }
   }
 
@@ -36,35 +37,76 @@ const Homepage = () => {
   const [contents, setContents] = useState("");
 
   const getPosts = () => {
-    db.ref().child("posts").on('value', (snapshot) => {
-      if(snapshot.exists()) {
-        setContents(Object.values(snapshot.val()))
-      } else {
-        setContents("")
-      }
+    axios.get(
+      'http://localhost:6050/api/post')
+    .then(res => {
+        console.log(Object.values(res.data.posts));
+        setContents(Object.values(res.data.posts));
+    })  
+    .catch(error => {
+        console.log(error)
     });
   }
 
   const delPost = (post) => {
     var message = "해당 트윗을 삭제하겠습니까?"
     if(window.confirm(message)) {
-      db.ref().child("posts").child(post.uid).child("userId").on('value', (snapshot) => {
-        if(snapshot.exists()) {
-          var delUser = snapshot.val()
-          if(delUser !== "null" && window.localStorage.getItem("userId") === delUser) {
-            db.ref().child("posts").child(post.uid).remove();
-          } else {
-            alert("권한이 없습니다.")
-          }
-        }
-      });
+      if(window.localStorage.getItem("userId") == post.userId) {
+        console.log(post._id)
+        axios.post(
+          'http://localhost:6050/api/post/del', {_id: post._id})
+        .then(res => {
+            console.log(res);
+            getPosts();
+        })  
+        .catch(error => {
+            console.log(error)
+        });
+      } else {
+        alert("권한이 없습니다.");
+      }
     }
+  }
+
+  const writeNewPost = (body) => {
+    var postData = {
+      userId: window.localStorage.getItem("userId"),
+      body: body,
+      time: getTime(),
+    };
+  
+    axios.post(
+      'http://localhost:6050/api/post/add',postData)
+    .then(res => {
+        console.log(res);
+        getPosts();
+    })  
+    .catch(error => {
+        console.log(error)
+    });
+  }
+  
+  const getTime = () => {
+    let today = new Date();
+  
+    const addZero = (n) => {
+      return n >= 10 ? n : '0' + n;
+    }
+  
+    let time = {
+      year: today.getFullYear(),
+      month: addZero(today.getMonth()),
+      date: addZero(today.getDate()),
+      hours: addZero(today.getHours()),
+      minutes: addZero(today.getMinutes()),
+      seconds: addZero(today.getSeconds()),
+    };
+  
+    return(`${time.year}/${time.month}/${time.date} ${time.hours}:${time.minutes}:${time.seconds}`)
   }
 
   useEffect(() => {
     getPosts();
-    if(text === "") tweetBtnState = false;
-    else tweetBtnState = true;
   }, []);
 
 
@@ -105,7 +147,7 @@ const Homepage = () => {
         {contents !== ""
           ? (Object.keys(contents).reverse().map((post, id) => (
           <div className="tweet-content-div">
-            <button className="tweet-content"> 
+            <div className="tweet-content"> 
               <div className="tweet-wrap">
                 <IoPersonCircle style={{fontSize: "3vw", marginRight:"5px", verticalAlign: "top"}}/>
                 <div style={{display:"inline-table"}}>
@@ -113,13 +155,13 @@ const Homepage = () => {
                   <div className="tweet-time"> - {contents[post].time}</div>
                   <button
                     className="del-btn"
+                    key={id}
                     onClick={() => delPost(contents[post])}
                   ><RiDeleteBinLine/></button>
                   <div className="tweet-body">{contents[post].body}</div>
                 </div>
               </div>
-
-            </button>
+            </div>
           </div>  
         )))
         : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} style={{marginTop:"20vh"}} />}
@@ -127,42 +169,6 @@ const Homepage = () => {
       </Content>
     </div>
   ); 
-}
-
-const writeNewPost = (body, time) => {
-  var postData = {
-    userId: window.localStorage.getItem("userId"),
-    uid: window.localStorage.getItem("userId"),
-    body: body,
-    time: time,
-  };
-
-  var newPostKey = db.ref().child('posts').push().key;
-  postData.uid = newPostKey;
-
-  var updates = {};
-  updates['/posts/' + newPostKey] = postData;
-
-  return db.ref().update(updates);
-};
-
-const getTime = () => {
-  let today = new Date();
-
-  const addZero = (n) => {
-    return n >= 10 ? n : '0' + n;
-  }
-
-  let time = {
-    year: today.getFullYear(),
-    month: addZero(today.getMonth()),
-    date: addZero(today.getDate()),
-    hours: addZero(today.getHours()),
-    minutes: addZero(today.getMinutes()),
-    seconds: addZero(today.getSeconds()),
-  };
-
-  return(`${time.year}/${time.month}/${time.date} ${time.hours}:${time.minutes}:${time.seconds}`)
 }
 
 export default Homepage

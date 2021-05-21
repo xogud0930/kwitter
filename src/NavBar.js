@@ -66,7 +66,7 @@ const NavBar = (props) => {
             <IoPersonCircle style={{fontSize:"3vw", verticalAlign: "middle"}}/>
             <div className="btn-profile-name">
                 <div style={{fontWeight: "bold"}}>{userData.userId}</div>
-                <div style={{color: "grey"}}>{userData.email}</div>
+                <div style={{color: "grey", minWidth: "8vw"}}>&nbsp;</div>
             </div>
             <BiDotsHorizontalRounded style={{fontSize:"1.3vw", verticalAlign: "middle"}}/>
         </button>
