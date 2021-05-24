@@ -53,7 +53,7 @@ const Login = (props) => {
     const loginAccount = () => {
 
         axios.post(
-        '/api/login',account)
+        'https://kwitter-server.herokuapp.com/api/login',account)
         .then(res => {
             setBtnCheck(true);
             setAccount({...account, idCheck: res.data.idCheck, pwCheck: res.data.pwCheck})

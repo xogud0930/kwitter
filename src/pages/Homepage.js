@@ -38,7 +38,7 @@ const Homepage = () => {
 
   const getPosts = () => {
     axios.get(
-      '/api/post')
+      'https://kwitter-server.herokuapp.com/api/post')
     .then(res => {
         console.log(Object.values(res.data.posts));
         setContents(Object.values(res.data.posts));
@@ -54,7 +54,7 @@ const Homepage = () => {
       if(window.localStorage.getItem("userId") == post.userId) {
         console.log(post.id)
         axios.post(
-          '/api/post/del', {id: post.id})
+          'https://kwitter-server.herokuapp.com/api/post/del', {id: post.id})
         .then(res => {
             console.log(res);
             getPosts();
@@ -76,7 +76,7 @@ const Homepage = () => {
     };
   
     axios.post(
-      '/api/post/add',postData)
+      'https://kwitter-server.herokuapp.com/api/post/add',postData)
     .then(res => {
         console.log(res);
         getPosts();

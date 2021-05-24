@@ -53,7 +53,7 @@ const SignIn = (props) => {
     const regAccount = () => {
         setBtnCheck(true);
         axios.post(
-        '/api/register',account)
+        'https://kwitter-server.herokuapp.com/api/register',account)
         .then(res => {
             console.log(res);
             setUserIdCheck(!res.data.idCheck);
