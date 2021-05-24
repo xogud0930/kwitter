@@ -1,9 +1,13 @@
 const proxy = require('http-proxy-middleware');
+
+const apiUrl = 'https://kwitter-server.herokuapp.com'
+
 module.exports = function(app) {
-    app.use('/register',proxy({
-        target: 'http://localhost:6050',
-        changeOrigin: true,    
-        secure: false
-        })
+    app.use(
+        '/api',
+        proxy({
+        target: apiUrl, 
+        changeOrigin: true, 
+        }) 
     );
 };

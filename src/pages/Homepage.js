@@ -38,7 +38,7 @@ const Homepage = () => {
 
   const getPosts = () => {
     axios.get(
-      'http://localhost:6050/api/post')
+      '/api/post')
     .then(res => {
         console.log(Object.values(res.data.posts));
         setContents(Object.values(res.data.posts));
@@ -52,9 +52,9 @@ const Homepage = () => {
     var message = "해당 트윗을 삭제하겠습니까?"
     if(window.confirm(message)) {
       if(window.localStorage.getItem("userId") == post.userId) {
-        console.log(post._id)
+        console.log(post.id)
         axios.post(
-          'http://localhost:6050/api/post/del', {_id: post._id})
+          '/api/post/del', {id: post.id})
         .then(res => {
             console.log(res);
             getPosts();
@@ -76,7 +76,7 @@ const Homepage = () => {
     };
   
     axios.post(
-      'http://localhost:6050/api/post/add',postData)
+      '/api/post/add',postData)
     .then(res => {
         console.log(res);
         getPosts();

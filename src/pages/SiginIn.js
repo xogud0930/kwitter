@@ -51,10 +51,12 @@ const SignIn = (props) => {
     };
 
     const regAccount = () => {
+        setBtnCheck(true);
         axios.post(
-        'http://localhost:6050/api/register',account)
+        '/api/register',account)
         .then(res => {
             console.log(res);
+            setUserIdCheck(!res.data.idCheck);
             setPwCheck(res.data.pwCheck);
             console.log(`Name : ${res.data.nameCheck}\nEmail : ${res.data.emailCheck}\nID : ${res.data.idCheck}\nPW : ${res.data.pwCheck}`);
             if(res.data.success) onReset();
@@ -63,21 +65,6 @@ const SignIn = (props) => {
             console.log(error)
         });
     };
-
-    const AccountCheck = () => {
-        db.ref().child("userId").on('value', (snapshot) => {
-
-            if(snapshot.exists()) {
-                var userIdList = Object.keys(snapshot.val())
-                userIdList.map((id) => {
-                    if(id === account.userId) {
-                        setUserIdCheck(true);
-                    }
-                })
-                
-            }
-        });
-    }
 
     return(
         <>

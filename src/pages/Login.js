@@ -53,19 +53,17 @@ const Login = (props) => {
     const loginAccount = () => {
 
         axios.post(
-        'http://localhost:6050/api/login',account)
+        '/api/login',account)
         .then(res => {
             setBtnCheck(true);
+            setAccount({...account, idCheck: res.data.idCheck, pwCheck: res.data.pwCheck})
             console.log(res);
             if(res.data.success) {
-                setAccount({...account, idCheck: res.data.idCheck, pwCheck: res.data.pwCheck})
                 if(res.data.idCheck & res.data.pwCheck) {
-                    window.localStorage.setItem("userId", res.data.result.userId)
-                    window.localStorage.setItem("email", res.data.result.email)
+                    window.localStorage.setItem("userId", account.userId)
+                    window.localStorage.setItem("email", account.email)
                     props.history.push("/main");
                 }
-            } else {
-                setAccount({...account, idCheck: false})
             }
         })  
         .catch(error => {
